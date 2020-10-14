@@ -1,7 +1,7 @@
 {
   "name": "appen-coding-challenge2",
   "version": "1.0.0",
-  "description": "take home intensive coding challenge1",
+  "description": "take home intensive coding challenge2",
   "main": "app.jsx",
   "scripts": {
     "start": "nodemon server/index.js",

@@ -8,6 +8,7 @@ import Time from './Time.jsx';
 const os = require('os');
 const process = require('process');
 const cpuStat = require('cpu-stat');
+const memwatch = require('memwatch');
 
 const routes = require('../../../Routes.js');
 
@@ -29,7 +30,7 @@ const App = (props) => {
       labels: ['60', '50', '40', '30', '20', '10', '0'],
       datasets: [
         {
-          label: `Memory Usage`,
+          label: `MEM Usage`,
           fill: true,
           lineTension: 0.5,
           backgroundColor: 'rgba(46, 229, 157, .5)',
@@ -155,8 +156,15 @@ const App = (props) => {
 
     getCPULoadAVG(1000, 100).then((avg) => {
       console.log(avg);
+      setCPU(avg)
     });
-  }, setCPU(avg))
+  },[CPU])
+
+  useEffect(() => {
+    memwatch.on('stats', (stats) => {
+      console.log(stats)
+    })
+  })
 
 
   return (
