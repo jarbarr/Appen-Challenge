@@ -6,6 +6,12 @@
   "configurations": [
     {
       "type": "java",
+      "name": "CodeLens (Launch) - LocalWeatherReportApplication",
+      "request": "launch",
+      "mainClass": "com.appen.challenge.localweatherreport.LocalWeatherReportApplication"
+    },
+    {
+      "type": "java",
       "name": "Debug (Launch) - Current File",
       "request": "launch",
       "mainClass": "${file}"

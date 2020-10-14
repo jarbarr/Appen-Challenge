@@ -5,7 +5,6 @@ import Form from './Form.jsx';
 import LineGraph from './LineGraph.jsx';
 import DailyList from './Daily.jsx';
 
-const axios = require('axios');
 const routes = require('../../../Routes.js');
 const config = require('../../../config.js');
 
@@ -23,17 +22,19 @@ const App = (props) => {
   const [colorP, setColorP] = useState("grey");
   const [data, setData] = useState({});
   const [initiated, initiate] = useState('false');
+  const [xAxis, setX] = useState([]);
 
   const getWeather = () => {
-    routes.maps(city, state, zip, setDaily, setHourly, setCurrent, routes.weather)
-    // setTimeout(() => {
-    //   graphData()
-    // }, 2000)
+    routes.maps(city, state, zip, setDaily, setHourly, setCurrent, routes.weather, setX)
   }
 
   useEffect(() => {
+    getWeather()
+  }, [])
+
+  useEffect(() => {
     let data = {
-      labels: ['3 AM', '6 AM', '9 AM', '12 PM', '3 PM', '6 PM', '9 PM', '12 PM'],
+      labels: xAxis,
       datasets: [
         {
           label: `Temp in ${units}`,
@@ -47,38 +48,11 @@ const App = (props) => {
         }
       ],
     }
-
-    if (initiated === 'false') {
-      getWeather();
       setData(data);
-      initiate(true)
-    }
+  }, [hourly])
 
-  })
-
-  const graphData = () => {
-    let data = {
-      labels: ['3 AM', '6 AM', '9 AM', '12 PM', '3 PM', '6 PM', '9 PM', '12 PM'],
-      datasets: [
-        {
-          label: `Temp in ${units}`,
-          fill: true,
-          lineTension: 0.5,
-          backgroundColor: 'rgba(46, 229, 157, .5)',
-          borderColor: 'rgba(46, 229, 157, 10)',
-          borderWidth: 2,
-          showLines: 'false',
-          data: hourly
-        }
-      ],
-    }
-    console.log('gd', hourly)
-    setData(data);
-  }
-
-  const convert = (arr) => {
-    console.log('prevconvert', arr)
-    let converted = arr.map((num) => {
+  const convert = () => {
+    let converted = hourly.map((num) => {
       if (units === 'celsius') {
         return Math.floor((num * (9 / 5)) + 32);
       }
@@ -86,14 +60,9 @@ const App = (props) => {
         return Math.floor((num - 32) * (5 / 9));
       }
     })
-    // setHourly(converted)
-    console.log('converted:', converted, 'hourly:', hourly)
-    setTimeout(() => {
-      setHourly(converted)
-      graphData()
-    }, 500)
-    // graphData()
+    setHourly(converted)
   }
+
   return (
     <div className='background'>
       <div className='app'>
@@ -112,9 +81,7 @@ const App = (props) => {
           city={city}
           state={state}
           setMeasure={setMeasure}
-          graphData={graphData}
           current={current} />
-          {/* {hourly.length !== 0 ? <LineGraph options={{ maintainAspectRatio: false }}width={200} height={100} units={units} hourly={hourly} /> : null } */}
           <LineGraph data={data} units={units} hourly={hourly} />
           <DailyList colorC={colorC} colorP={colorP} daily={daily} />
           <Form
@@ -133,7 +100,6 @@ const App = (props) => {
             colorC={colorC}
             convert={convert}
             current={current}
-            graphData={graphData}
           />
         </div>
       </div>

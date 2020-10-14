@@ -5,7 +5,7 @@ const moment = require('moment');
 const Location = (props) => {
   return (
     <div className="location">
-      <h2>{props.city}, {props.state} {props.zip}</h2>
+      <h2 className="city">{props.city}, {props.state} {props.zip}</h2>
       <h3>{moment().format('dddd')}</h3>
       <h3>{props.current.condition}</h3>
       <Weather
@@ -18,7 +18,6 @@ const Location = (props) => {
         setUnits={props.setUnits}
         setMeasure={props.setMeasure}
         units={props.units}
-        graphData={props.graphData}
         current={props.current} />
     </div>
   );
@@ -26,20 +25,18 @@ const Location = (props) => {
 
 const Weather = (props) => {
   const switchUnits = (e) => {
-    if (props.units === 'celsius') {
-      props.current.temp = ((props.current.temp * (9 / 5)) + 32);
-      props.setUnits('farenheit');
-      props.setMeasure('imperial');
-    } else {
+    if (props.units === 'farenheit') {
       props.current.temp = ((props.current.temp - 32) * (5 / 9));
       props.setUnits('celsius');
       props.setMeasure('metric');
+    } else {
+      props.current.temp = ((props.current.temp * (9 / 5)) + 32);
+      props.setUnits('farenheit');
+      props.setMeasure('imperial');
     }
-    props.convert(props.hourly);
+    props.convert();
     props.setColorC(props.colorP);
     props.setColorP(props.colorC);
-    // props.graphData()
-    // props.setClick('unClicked')
 
   }
   return (

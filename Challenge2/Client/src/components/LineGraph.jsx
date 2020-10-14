@@ -1,12 +1,6 @@
 import React from 'react';
 import {Line} from 'react-chartjs-2';
 
-const Label = (props) => {
-  return (
-    <h2 className="hourlyLabel">Weather Per Hour</h2>
-  );
-};
-
 export default class LineGraph extends React.Component {
   constructor(props){
     super(props);
@@ -25,12 +19,17 @@ export default class LineGraph extends React.Component {
               display:true,
               fontSize: 20
             },
-            legend:{
+            legend: {
               display: true,
-              position: 'right'
+              position: 'left',
+              labels: {
+                fontSize: 18,
+                fontColor: 'grey'
+              },
             },
             maintainAspectRatio: false
           }}
+          redraw
         />
       </div>
     );

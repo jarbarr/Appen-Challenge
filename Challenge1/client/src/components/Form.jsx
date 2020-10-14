@@ -11,7 +11,6 @@ const Form = (props) => {
     props.setColorC('black');
     props.setColorP('grey');
     props.getWeather()
-    props.graphData();
     if (city !== '') {
       props.setCity(city)
     }
